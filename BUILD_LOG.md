@@ -33,3 +33,21 @@ Next.js, Supabase, and Recraft were not used. The running app is TanStack Start,
 - Snap guides and real scale-bar units.
 - Turn on Stripe price ids when billing keys are present.
 - Keep this log updated.
+
+
+## Iteration 3 — snap guides and plot marks
+
+### Successes
+
+- Snap-to-10 px grid while objects move and scale. Toggle lives next to the align controls and starts on.
+- Four new marks: western blot (lanes and bands), bar chart, line plot with points, and a histology section. All stay fully editable vectors.
+
+### Failures and fixes
+
+- None that blocked the build. The snap listener is attached once at canvas creation; the toggle only flips a flag.
+
+### Next
+
+- Orthogonal connectors that stick to objects.
+- Scale bar with a unit label.
+- More blot and chart variants.

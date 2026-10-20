@@ -6,19 +6,17 @@ GitHub: https://github.com/hoogguns/scienceartcreatorcom
 
 Next.js canvas with rectangles, circles, text, delete, and clear. Recorded in history. Those tools are still in the studio.
 
-## Iteration 2 — golden image (this tree)
+## Iteration 2 — golden image
 
-The studio replaces the Next.js shell with the app that is actually running:
+Vector plate, scientific icon library, Arrange / Grok draft, local + account save, PNG/SVG/PDF export, pricing page.
 
-- Vector plate: drag, scale, rotate, layers, align, undo
-- Scientific icon library (cells, organelles, molecules, labware, pathways, anatomy)
-- Arrange from a prompt; Grok draft when signed in
-- Save on this device and to an account library
-- PNG, SVG, and print PDF
-- Starter, Unlimited, and Lifetime pricing (checkout waits for billing keys)
+## Iteration 3 — snap + plots
 
-Details of what broke and what was fixed: `BUILD_LOG.md`.
+- 10 px snap guides while moving and scaling (toggle in the side panel).
+- New marks: western blot, bar chart, line plot, histology section.
+
+Details: `BUILD_LOG.md`.
 
 ## Next
 
-Snap guides, scale-bar units, blots and plots, then live Stripe prices.
+Orthogonal connectors, more blot/plot variants, scale-bar units with labels, live Stripe prices.

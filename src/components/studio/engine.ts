@@ -83,6 +83,7 @@ function strokeTree(obj: FabricObject, width: number) {
 }
 
 export type Engine = {
+  setSnap: (on: boolean) => void;
   destroy: () => void;
   setTool: (tool: Tool) => void;
   setViewScale: (scale: number) => void;
@@ -167,6 +168,32 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
     preserveObjectStacking: true,
     selection: true,
     containerClass: "artboard",
+  });
+
+  const SNAP = 10;
+  let snapOn = true;
+  function snap(value: number) {
+    return snapOn ? Math.round(value / SNAP) * SNAP : value;
+  }
+  canvas.on("object:moving", (opt) => {
+    const obj = opt.target;
+    if (!obj || !snapOn) return;
+    obj.set({
+      left: snap(obj.left ?? 0),
+      top: snap(obj.top ?? 0),
+    });
+  });
+  canvas.on("object:scaling", (opt) => {
+    const obj = opt.target;
+    if (!obj || !snapOn) return;
+    const w = (obj.width ?? 0) * (obj.scaleX ?? 1);
+    const h = (obj.height ?? 0) * (obj.scaleY ?? 1);
+    if (Math.abs(w - snap(w)) < 4) {
+      obj.set("scaleX", snap(w) / (obj.width || 1));
+    }
+    if (Math.abs(h - snap(h)) < 4) {
+      obj.set("scaleY", snap(h) / (obj.height || 1));
+    }
   });
 
   const listeners = new Set<() => void>();
@@ -398,6 +425,9 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
   layoutScale();
 
   const engine: Engine = {
+    setSnap(on) {
+      snapOn = on;
+    },
     destroy() {
       canvas.dispose();
       host.replaceChildren();

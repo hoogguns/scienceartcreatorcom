@@ -69,6 +69,7 @@ export function StudioApp({
   const [rev, setRev] = useState(0);
   const [title, setTitle] = useState("Untitled figure");
   const [tool, setTool] = useState<Tool>("select");
+  const [snapOn, setSnapOn] = useState(true);
   const [userZoom, setUserZoom] = useState(1);
   const [art, setArt] = useState({ width: 1100, height: 760 });
   const [fitTick, setFitTick] = useState(0);
@@ -580,6 +581,17 @@ export function StudioApp({
           </Button>
         ))}
       </div>
+      <Button
+        size="sm"
+        variant={snapOn ? "default" : "quiet"}
+        onClick={() => {
+          const next = !snapOn;
+          setSnapOn(next);
+          engineRef.current?.setSnap(next);
+        }}
+      >
+        Snap {snapOn ? "on" : "off"}
+      </Button>
       <div className="flex gap-2">
         <Button size="sm" variant="quiet" onClick={() => engineRef.current?.bringForward()}>
           Forward

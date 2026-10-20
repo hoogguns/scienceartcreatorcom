@@ -314,6 +314,38 @@ export const ICONS: IconDef[] = [
     { k: "l", x1: 16, y1: 40, x2: 16, y2: 60, s: S, sw: 3, cap: "square" },
     { k: "l", x1: 84, y1: 40, x2: 84, y2: 60, s: S, sw: 3, cap: "square" },
   ]),
+  def("western-blot", "Western blot", "marks", ["blot", "western", "gel", "protein", "band"], [
+    { k: "r", x: 18, y: 20, w: 64, h: 60, rx: 2, f: "#f8f4ee", s: S, sw: 2 },
+    { k: "r", x: 28, y: 32, w: 12, h: 8, f: D },
+    { k: "r", x: 44, y: 36, w: 12, h: 6, f: D },
+    { k: "r", x: 60, y: 40, w: 12, h: 10, f: D },
+    { k: "l", x1: 22, y1: 70, x2: 78, y2: 70, s: S, sw: 1.2 },
+  ]),
+  def("bar-chart", "Bar chart", "marks", ["chart", "bar", "plot", "graph", "data"], [
+    { k: "l", x1: 20, y1: 78, x2: 20, y2: 22, s: S, sw: 2 },
+    { k: "l", x1: 20, y1: 78, x2: 82, y2: 78, s: S, sw: 2 },
+    { k: "r", x: 28, y: 48, w: 12, h: 30, f: WASH, s: S, sw: 1.5 },
+    { k: "r", x: 46, y: 36, w: 12, h: 42, f: P, s: S, sw: 1.5 },
+    { k: "r", x: 64, y: 28, w: 12, h: 50, f: DEEP, s: S, sw: 1.5 },
+  ]),
+  def("line-plot", "Line plot", "marks", ["chart", "line", "plot", "graph", "data"], [
+    { k: "l", x1: 18, y1: 76, x2: 18, y2: 24, s: S, sw: 2 },
+    { k: "l", x1: 18, y1: 76, x2: 84, y2: 76, s: S, sw: 2 },
+    { k: "p", d: "M22 62 L38 48 L52 54 L68 32 L80 40", f: "none", s: DEEP, sw: 2.4 },
+    { k: "c", cx: 22, cy: 62, r: 2.4, f: DEEP },
+    { k: "c", cx: 38, cy: 48, r: 2.4, f: DEEP },
+    { k: "c", cx: 52, cy: 54, r: 2.4, f: DEEP },
+    { k: "c", cx: 68, cy: 32, r: 2.4, f: DEEP },
+    { k: "c", cx: 80, cy: 40, r: 2.4, f: DEEP },
+  ]),
+  def("histology", "Histology", "marks", ["histology", "tissue", "section", "stain"], [
+    { k: "c", cx: 50, cy: 50, r: 34, f: "#f3e8d8", s: S, sw: 2.2 },
+    { k: "c", cx: 38, cy: 42, r: 8, f: "#e6c9b0", s: S, sw: 1.4 },
+    { k: "c", cx: 58, cy: 40, r: 6, f: "#d4b89a", s: S, sw: 1.4 },
+    { k: "c", cx: 46, cy: 60, r: 7, f: "#e6c9b0", s: S, sw: 1.4 },
+    { k: "c", cx: 62, cy: 58, r: 5, f: "#d4b89a", s: S, sw: 1.4 },
+    { k: "c", cx: 34, cy: 56, r: 3, f: DEEP },
+  ]),
 ];
 
 const byId = new Map(ICONS.map((icon) => [icon.id, icon]));

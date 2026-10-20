@@ -18,3 +18,16 @@ Still open:
 - Stripe keys are not connected.
 - Remote still holds the earlier StudioApp tree. Do not partial-overwrite it.
 - Arrows do not stick to objects yet.
+
+
+## Iteration 3 — snap and plot marks
+
+Successes:
+
+- Snap guides (10 px) on move and scale, with a side-panel toggle.
+- Western blot, bar chart, line plot, and histology icons added to the marks library.
+
+Still open:
+
+- Connectors do not stick yet.
+- Stripe keys still not connected.
