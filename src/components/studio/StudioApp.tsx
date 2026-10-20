@@ -710,6 +710,9 @@ export function StudioApp({
             <ToolButton label="Arrow" active={tool === "arrow"} onClick={() => chooseTool("arrow")}>
               <ArrowRight className="size-4" />
             </ToolButton>
+            <ToolButton label="Connector" active={tool === "ortho"} onClick={() => chooseTool("ortho")}>
+              <ArrowRight className="size-4" />
+            </ToolButton>
             <span className="mx-1 h-6 w-px bg-line" />
             <ToolButton label="Undo" active={false} disabled={!history.undo} onClick={() => void engine?.undo()}>
               <Undo2 className="size-4" />

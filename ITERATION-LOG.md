@@ -31,3 +31,16 @@ Still open:
 
 - Connectors do not stick yet.
 - Stripe keys still not connected.
+
+
+## Iteration 4 — connectors and labeled scale bars
+
+Successes:
+
+- Orthogonal Connector tool with endpoint snap to nearby objects.
+- Scale bars now show unit labels; added nm variant, multi-lane blot, and scatter plot.
+
+Still open:
+
+- Connectors do not re-route when objects move.
+- Stripe keys still not connected.

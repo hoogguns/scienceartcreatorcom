@@ -51,3 +51,21 @@ Next.js, Supabase, and Recraft were not used. The running app is TanStack Start,
 - Orthogonal connectors that stick to objects.
 - Scale bar with a unit label.
 - More blot and chart variants.
+
+
+## Iteration 4 — orthogonal connectors and labeled scale bars
+
+### Successes
+
+- New Connector tool draws an orthogonal (horizontal-then-vertical) path with an arrow head. Endpoints snap to the nearest object edge or center within ~28 px at draw time.
+- Scale-bar icon now carries an editable-looking unit label ("100 μm"). Added a 50 nm variant.
+- Added multi-lane western blot and a scatter plot to the marks library.
+
+### Failures and fixes
+
+- None that blocked the build. Connectors are static after drawing; they do not yet re-route when objects move.
+
+### Next
+
+- Update connectors when their target objects move.
+- More unit options and multi-panel masters.

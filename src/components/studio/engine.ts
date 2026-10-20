@@ -15,7 +15,7 @@ import type { Draft, DraftItem } from "@/lib/icons/types";
 import type { FigureFile } from "@/lib/local-figures";
 import { DEEP, INK, WASH } from "@/lib/icons/svg";
 
-export type Tool = "select" | "pan" | "text" | "rect" | "ellipse" | "line" | "arrow";
+export type Tool = "select" | "pan" | "text" | "rect" | "ellipse" | "line" | "arrow" | "ortho";
 
 export type LayerInfo = {
   index: number;
@@ -134,6 +134,44 @@ function arrowD(x1: number, y1: number, x2: number, y2: number) {
   const rx = hx + Math.cos(ang - Math.PI / 2) * wing;
   const ry = hy + Math.sin(ang - Math.PI / 2) * wing;
   return `M ${x1} ${y1} L ${hx} ${hy} M ${lx} ${ly} L ${x2} ${y2} L ${rx} ${ry}`;
+}
+
+
+function orthoD(x1: number, y1: number, x2: number, y2: number, withHead = true) {
+  const midX = x1 + (x2 - x1) * 0.55;
+  const path = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
+  if (!withHead) return path;
+  const ang = Math.atan2(y2 - y1, x2 - midX || 1);
+  const head = 14;
+  const hx = x2 - Math.cos(ang) * head;
+  const hy = y2 - Math.sin(ang) * head;
+  const wing = 8;
+  const lx = hx + Math.cos(ang + Math.PI / 2) * wing;
+  const ly = hy + Math.sin(ang + Math.PI / 2) * wing;
+  const rx = hx + Math.cos(ang - Math.PI / 2) * wing;
+  const ry = hy + Math.sin(ang - Math.PI / 2) * wing;
+  return `${path} M ${lx} ${ly} L ${x2} ${y2} L ${rx} ${ry}`;
+}
+
+function nearestSnapPoint(canvas: Canvas, pt: { x: number; y: number }, threshold = 28) {
+  let best = { x: pt.x, y: pt.y, dist: threshold };
+  for (const obj of canvas.getObjects()) {
+    if (!obj.visible) continue;
+    obj.setCoords();
+    const box = obj.getBoundingRect();
+    const candidates = [
+      { x: box.left + box.width / 2, y: box.top + box.height / 2 },
+      { x: box.left, y: box.top + box.height / 2 },
+      { x: box.left + box.width, y: box.top + box.height / 2 },
+      { x: box.left + box.width / 2, y: box.top },
+      { x: box.left + box.width / 2, y: box.top + box.height },
+    ];
+    for (const c of candidates) {
+      const d = Math.hypot(c.x - pt.x, c.y - pt.y);
+      if (d < best.dist) best = { x: c.x, y: c.y, dist: d };
+    }
+  }
+  return { x: best.x, y: best.y };
 }
 
 export async function createEngine(host: HTMLElement): Promise<Engine> {
@@ -313,7 +351,7 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
       canvas.defaultCursor = "grabbing";
       return;
     }
-    if (tool !== "rect" && tool !== "ellipse" && tool !== "line" && tool !== "arrow") return;
+    if (tool !== "rect" && tool !== "ellipse" && tool !== "line" && tool !== "arrow" && tool !== "ortho") return;
     drawing = true;
     sketchStart = { x: point.x, y: point.y };
     if (tool === "rect") {
@@ -348,7 +386,7 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
         strokeWidth: 3,
         strokeLineCap: "round",
       });
-      tag(sketch, "shape", tool === "arrow" ? "Arrow" : "Line");
+      tag(sketch, "shape", tool === "arrow" ? "Arrow" : tool === "ortho" ? "Connector" : "Line");
     }
     canvas.add(sketch);
   });
@@ -399,8 +437,14 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
       canvas.requestRenderAll();
       return;
     }
-    if (tool === "arrow" && made instanceof Line) {
-      const d = arrowD(made.x1 ?? 0, made.y1 ?? 0, made.x2 ?? 0, made.y2 ?? 0);
+    if ((tool === "arrow" || tool === "ortho") && made instanceof Line) {
+      let x1 = made.x1 ?? 0, y1 = made.y1 ?? 0, x2 = made.x2 ?? 0, y2 = made.y2 ?? 0;
+      if (tool === "ortho") {
+        const s1 = nearestSnapPoint(canvas, { x: x1, y: y1 });
+        const s2 = nearestSnapPoint(canvas, { x: x2, y: y2 });
+        x1 = s1.x; y1 = s1.y; x2 = s2.x; y2 = s2.y;
+      }
+      const d = tool === "ortho" ? orthoD(x1, y1, x2, y2, true) : arrowD(x1, y1, x2, y2);
       canvas.remove(made);
       const path = new Path(d, {
         stroke: INK,
@@ -409,7 +453,7 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
         strokeLineCap: "round",
         strokeLineJoin: "round",
       });
-      tag(path, "shape", "Arrow");
+      tag(path, "shape", tool === "ortho" ? "Connector" : "Arrow");
       canvas.add(path);
       canvas.setActiveObject(path);
     } else {

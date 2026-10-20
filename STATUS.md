@@ -15,8 +15,14 @@ Vector plate, scientific icon library, Arrange / Grok draft, local + account sav
 - 10 px snap guides while moving and scaling (toggle in the side panel).
 - New marks: western blot, bar chart, line plot, histology section.
 
+## Iteration 4 — connectors and labeled scale bars
+
+- Orthogonal Connector tool: draws an L-shaped path and snaps endpoints to nearby object edges or centers.
+- Scale bar marks now include unit labels (100 μm, 50 nm).
+- Extra marks: multi-lane western blot, scatter plot.
+
 Details: `BUILD_LOG.md`.
 
 ## Next
 
-Orthogonal connectors, more blot/plot variants, scale-bar units with labels, live Stripe prices.
+Live connector updates when objects move, more scale-bar unit options, multi-panel masters, live Stripe prices.

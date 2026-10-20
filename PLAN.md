@@ -11,8 +11,7 @@ Iteration 1 is in the product. See `BUILD_LOG.md` for what worked and what broke
 ## Next pass
 
 1. Read `BUILD_LOG.md` before editing.
-2. Orthogonal connectors that stick to objects.
-3. Scale bar with a unit label.
-4. More blot and chart variants.
-5. Do not restart the dev server unless dependencies or `vite.config` change.
-6. Do not label the app as a game in `src/lib/og/site.json`.
+2. Update connectors when their target objects move.
+3. More scale-bar unit options and multi-panel masters.
+4. Do not restart the dev server unless dependencies or `vite.config` change.
+5. Do not label the app as a game in `src/lib/og/site.json`.
