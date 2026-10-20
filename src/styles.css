@@ -1,0 +1,157 @@
+@import "@fontsource/fraunces/latin-500.css";
+@import "@fontsource/fraunces/latin-600.css";
+@import "@fontsource/source-sans-3/latin-400.css";
+@import "@fontsource/source-sans-3/latin-500.css";
+@import "@fontsource/source-sans-3/latin-600.css";
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Palatino, serif;
+  --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
+  --color-paper: #f3f0ea;
+  --color-ink: #1a1c1e;
+  --color-muted: #5e666c;
+  --color-card: #fbf9f6;
+  --color-line: #e3ddd4;
+  --color-accent: #1f4e5f;
+  --color-accent-fg: #f6f3ee;
+  --color-wash: #e6eef0;
+  --color-desk: #e6e1d7;
+  --color-danger: #8d3d36;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.press {
+  transition:
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.press:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press {
+    transition: none;
+  }
+
+  .press:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+.field {
+  height: 2.75rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+  padding: 0 0.75rem;
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.field:focus-visible,
+.field-inline:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.field-inline {
+  height: 2.25rem;
+  width: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+  padding: 0 0.5rem;
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.plate {
+  border-radius: 24px;
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+  padding: 16px;
+}
+
+.glyph svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.desk {
+  background-color: var(--color-desk);
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--color-ink) 16%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+}
+
+.stage-host {
+  width: fit-content;
+  margin: auto;
+}
+
+.artboard {
+  background: white;
+  box-shadow: 0 18px 40px color-mix(in oklab, var(--color-ink) 14%, transparent);
+}
+
+.drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  pointer-events: none;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+}
+
+.chip-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip-row::-webkit-scrollbar {
+  display: none;
+}

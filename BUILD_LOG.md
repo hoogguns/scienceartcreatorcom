@@ -1,0 +1,35 @@
+# Build log
+
+Read this file and `PLAN.md` before the next pass.
+
+## Iteration 1 — studio foundation
+
+Shipped a scientific figure studio: vector canvas, icon library, local and signed-in save, PNG / SVG / print PDF, pricing, and a first-draft arranger.
+
+### Successes
+
+- Fabric canvas: select, drag, scale, rotate, layer order, align, undo, redo, text, rectangle, ellipse, line, arrow.
+- About fifty textbook icons across cells, organelles, molecules, labware, pathways, anatomy, and panel marks. Click or drag onto the plate.
+- “Arrange” builds a labeled plate from the prompt without an API call. “Draft with Grok” is signed-in, capped per day, and returns only library icon ids so the result stays editable.
+- Figures autosave in the browser. Save writes the same figure into the account library.
+- Starter, Unlimited, and Lifetime are on the pricing page. Stripe Checkout runs when billing keys exist; otherwise the editor and export stay open.
+- Landing, figures list, and sign-in (Google and X) are in place.
+- Dev and production renders are clean: no console errors, no horizontal overflow. Production preview needed the PGLite asset copy below.
+
+### Failures and fixes
+
+- Production preview exited on boot because the Nitro bundle did not carry `pglite.data` / wasm next to the bundled driver. `scripts/copy-pglite-assets.mjs` now runs as part of `npm run build`.
+- The first arranger treated “organelles” as every organelle tag, so a plant chloroplast landed on an animal-cell plate, and labels sat on top of the next icon. Matching is now whole words, and callout names sit beside the icons.
+- PNG / SVG / PDF in the top tool row were clipped. Export lives in the side panel (and the Export tab on a phone).
+- A canvas on the studio page makes the brand check ask for a game card. This is not a game. The share image stays a normal product card.
+
+### Not this stack
+
+Next.js, Supabase, and Recraft were not used. The running app is TanStack Start, Neon (PGLite in the preview), Better Auth, and Grok for drafts. Same product jobs: editable vectors, accounts, saved figures, and paid plans.
+
+### Next
+
+- More icons (blots, plots, histology) and multi-panel masters.
+- Snap guides and real scale-bar units.
+- Turn on Stripe price ids when billing keys are present.
+- Keep this log updated.
