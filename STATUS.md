@@ -36,6 +36,10 @@
 5. Prepare for GitHub repo creation.
 
 ### Links / Screenshots
-- Local: http://localhost:3000
+- **GitHub Repo**: https://github.com/hoogguns/scienceartcreatorcom
+- Local dev: http://localhost:3000
 - Project path: /tmp/scienceartcreator
-- (Screenshots to be added after visual verification)
+- Commit: Iteration 1 foundation pushed (canvas + tracking files)
+
+### Iteration 1 Complete
+Foundation is solid. Ready for Iteration 2: icon library + drag-and-drop.
