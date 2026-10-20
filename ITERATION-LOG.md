@@ -44,3 +44,15 @@ Still open:
 
 - Connectors do not re-route when objects move.
 - Stripe keys still not connected.
+
+
+## Iteration 5 — live connectors
+
+Successes:
+
+- Connectors re-route when their source or target objects move.
+- Added 1 mm scale bar and multi-panel master mark.
+
+Still open:
+
+- Stripe keys still not connected.

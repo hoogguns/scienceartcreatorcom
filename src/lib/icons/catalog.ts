@@ -321,6 +321,22 @@ export const ICONS: IconDef[] = [
     { k: "l", x1: 84, y1: 36, x2: 84, y2: 56, s: S, sw: 3, cap: "square" },
     { k: "t", x: 50, y: 74, text: "50 nm", size: 14, f: S },
   ]),
+  def("scale-bar-mm", "Scale bar (mm)", "marks", ["scale", "bar", "measure", "mm"], [
+    { k: "l", x1: 16, y1: 46, x2: 84, y2: 46, s: S, sw: 4, cap: "square" },
+    { k: "l", x1: 16, y1: 36, x2: 16, y2: 56, s: S, sw: 3, cap: "square" },
+    { k: "l", x1: 84, y1: 36, x2: 84, y2: 56, s: S, sw: 3, cap: "square" },
+    { k: "t", x: 50, y: 74, text: "1 mm", size: 14, f: S },
+  ]),
+  def("multi-panel", "Multi-panel", "marks", ["panel", "master", "layout", "figure"], [
+    { k: "r", x: 8, y: 10, w: 40, h: 36, rx: 2, f: WASH, s: S, sw: 1.6 },
+    { k: "r", x: 52, y: 10, w: 40, h: 36, rx: 2, f: P, s: S, sw: 1.6 },
+    { k: "r", x: 8, y: 52, w: 40, h: 36, rx: 2, f: P, s: S, sw: 1.6 },
+    { k: "r", x: 52, y: 52, w: 40, h: 36, rx: 2, f: WASH, s: S, sw: 1.6 },
+    { k: "t", x: 28, y: 34, text: "A", size: 16, f: S },
+    { k: "t", x: 72, y: 34, text: "B", size: 16, f: S },
+    { k: "t", x: 28, y: 76, text: "C", size: 16, f: S },
+    { k: "t", x: 72, y: 76, text: "D", size: 16, f: S },
+  ]),
   def("western-blot-multi", "Western blot (multi)", "marks", ["blot", "western", "gel", "lanes"], [
     { k: "r", x: 12, y: 18, w: 76, h: 58, rx: 2, f: "#f8f4ee", s: S, sw: 2 },
     { k: "r", x: 18, y: 30, w: 8, h: 6, f: D },

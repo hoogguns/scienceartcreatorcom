@@ -31,7 +31,7 @@ export type SelectionInfo = {
   text: string | null;
 };
 
-type Meta = FabricObject & { sacKind?: string; sacLabel?: string };
+type Meta = FabricObject & { sacKind?: string; sacLabel?: string; sacId?: string; sacFromId?: string; sacToId?: string };
 
 const ART_PRESETS = {
   journal: { width: 1100, height: 760 },
@@ -174,9 +174,69 @@ function nearestSnapPoint(canvas: Canvas, pt: { x: number; y: number }, threshol
   return { x: best.x, y: best.y };
 }
 
+
+let idSeq = 1;
+function ensureId(obj: FabricObject) {
+  const meta = obj as Meta;
+  if (!meta.sacId) meta.sacId = `o${idSeq++}`;
+  return meta.sacId;
+}
+
+function nearestObject(canvas: Canvas, pt: { x: number; y: number }, threshold = 36): FabricObject | null {
+  let best: FabricObject | null = null;
+  let bestDist = threshold;
+  for (const obj of canvas.getObjects()) {
+    if (!obj.visible || (obj as Meta).sacKind === "shape" && (obj as Meta).sacLabel === "Connector") continue;
+    obj.setCoords();
+    const box = obj.getBoundingRect();
+    const cx = box.left + box.width / 2;
+    const cy = box.top + box.height / 2;
+    const d = Math.hypot(cx - pt.x, cy - pt.y);
+    if (d < bestDist) {
+      best = obj;
+      bestDist = d;
+    }
+  }
+  return best;
+}
+
+function edgePoint(obj: FabricObject, toward: { x: number; y: number }) {
+  obj.setCoords();
+  const box = obj.getBoundingRect();
+  const cx = box.left + box.width / 2;
+  const cy = box.top + box.height / 2;
+  const dx = toward.x - cx;
+  const dy = toward.y - cy;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    return { x: dx > 0 ? box.left + box.width : box.left, y: cy };
+  }
+  return { x: cx, y: dy > 0 ? box.top + box.height : box.top };
+}
+
+function updateConnectors(canvas: Canvas, moved?: FabricObject) {
+  const objs = canvas.getObjects();
+  for (const obj of objs) {
+    const meta = obj as Meta;
+    if (meta.sacLabel !== "Connector" || !meta.sacFromId || !meta.sacToId) continue;
+    if (moved && meta.sacFromId !== (moved as Meta).sacId && meta.sacToId !== (moved as Meta).sacId) continue;
+    const from = objs.find((o) => (o as Meta).sacId === meta.sacFromId);
+    const to = objs.find((o) => (o as Meta).sacId === meta.sacToId);
+    if (!from || !to) continue;
+    const mid = { x: (from.getCenterPoint().x + to.getCenterPoint().x) / 2, y: (from.getCenterPoint().y + to.getCenterPoint().y) / 2 };
+    const p1 = edgePoint(from, mid);
+    const p2 = edgePoint(to, mid);
+    const d = orthoD(p1.x, p1.y, p2.x, p2.y, true);
+    if (obj instanceof Path) {
+      obj.set({ path: new Path(d).path });
+      obj.setCoords();
+    }
+  }
+  canvas.requestRenderAll();
+}
+
 export async function createEngine(host: HTMLElement): Promise<Engine> {
   if (!FabricObject.customProperties.includes("sacKind")) {
-    FabricObject.customProperties.push("sacKind", "sacLabel");
+    FabricObject.customProperties.push("sacKind", "sacLabel", "sacId", "sacFromId", "sacToId");
   }
   FabricObject.ownDefaults.borderColor = DEEP;
   FabricObject.ownDefaults.cornerColor = "#ffffff";
@@ -309,6 +369,7 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
     if (parts.length === 0) return;
     const grouped = parts.length === 1 ? parts[0] : new Group(parts);
     tag(grouped, "icon", icon.name);
+    ensureId(grouped);
     grouped.set({
       left: point.x,
       top: point.y,
@@ -339,8 +400,14 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
     return label;
   }
 
-  canvas.on("object:modified", () => {
-    if (!drawing) commit();
+  canvas.on("object:modified", (opt) => {
+    if (!drawing) {
+      updateConnectors(canvas, opt.target);
+      commit();
+    }
+  });
+  canvas.on("object:moving", (opt) => {
+    updateConnectors(canvas, opt.target);
   });
 
   canvas.on("mouse:down", (opt) => {
@@ -454,6 +521,15 @@ export async function createEngine(host: HTMLElement): Promise<Engine> {
         strokeLineJoin: "round",
       });
       tag(path, "shape", tool === "ortho" ? "Connector" : "Arrow");
+      ensureId(path);
+      if (tool === "ortho") {
+        const fromObj = nearestObject(canvas, { x: x1, y: y1 });
+        const toObj = nearestObject(canvas, { x: x2, y: y2 });
+        if (fromObj && toObj && fromObj !== toObj) {
+          (path as Meta).sacFromId = ensureId(fromObj);
+          (path as Meta).sacToId = ensureId(toObj);
+        }
+      }
       canvas.add(path);
       canvas.setActiveObject(path);
     } else {

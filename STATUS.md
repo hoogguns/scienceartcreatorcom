@@ -21,8 +21,13 @@ Vector plate, scientific icon library, Arrange / Grok draft, local + account sav
 - Scale bar marks now include unit labels (100 μm, 50 nm).
 - Extra marks: multi-lane western blot, scatter plot.
 
+## Iteration 5 — live connectors
+
+- Connectors remember their source and target objects and re-route when those objects move.
+- Added 1 mm scale bar and a multi-panel master mark (A–D).
+
 Details: `BUILD_LOG.md`.
 
 ## Next
 
-Live connector updates when objects move, more scale-bar unit options, multi-panel masters, live Stripe prices.
+More unit options, multi-panel templates that place real panels, live Stripe prices.

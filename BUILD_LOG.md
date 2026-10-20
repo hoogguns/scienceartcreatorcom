@@ -69,3 +69,20 @@ Next.js, Supabase, and Recraft were not used. The running app is TanStack Start,
 
 - Update connectors when their target objects move.
 - More unit options and multi-panel masters.
+
+
+## Iteration 5 — live connectors
+
+### Successes
+
+- Connectors now store sacFromId / sacToId. When either endpoint object moves, the connector recomputes its orthogonal path and arrow head so it stays attached.
+- Added a 1 mm scale-bar mark and a multi-panel master (A–D layout) to the library.
+
+### Failures and fixes
+
+- Path updates use the Fabric Path.path array so the geometry redraws without recreating the object. Build stayed clean.
+
+### Next
+
+- Multi-panel templates that drop real labeled panels.
+- More scale-bar units.
